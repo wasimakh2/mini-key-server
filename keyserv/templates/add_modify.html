@@ -30,5 +30,7 @@
 
 {% block container %}
 <h2>{{ header }}</h2>
-{{ wtf.quick_form(form) }}
+{% if form.errors %}
+  <div class="alert alert-danger">{{ wtf.form_errors(form) }}</div>
+{% endif %}{{ wtf.form.hidden_tag() }}{{ wtf.form_field(form.key) }}{{ wtf.form_field(form.value) }}{{ wtf.form_field(form.submit) }}
 {%- endblock %}
