@@ -1,5 +1,35 @@
 # mini-key-server
 
+## Fixing GitHub Actions Failure
+
+If you encounter a GitHub Actions run failure, follow these steps to troubleshoot and resolve the issue.
+
+1. **Check Error Logs:**
+   Review the error logs from the GitHub Actions run to identify any specific error messages or failure causes.
+
+2. **Check Workflow File:**
+   Examine the GitHub Actions workflow file (e.g., .github/workflows/main.yml) to ensure that all necessary steps and configurations are correctly set up.
+
+3. **Review Dependencies:**
+   Verify that all required dependencies and environment setup are accurately specified in the workflow file.
+
+4. **Run Locally:**
+   Consider running the necessary build or test commands locally to identify any issues that may not be apparent in the GitHub Actions environment.
+
+5. **Consult Community:**
+   If the issue persists, reach out to the community or seek assistance from platform-specific resources or forums.
+
+6. **Open an Issue:**
+   If the problem remains unresolved, open an issue in the repository to seek help from the project maintainers or contributors.
+
+## Relevant Error Logs
+
+Include any relevant error logs or error messages that can help identify the cause of the failure.
+
+```json
+Insert relevant error logs or error messages here
+```
+
 This web application provides a restful API for your desktop and other applications licensing needs.
 
 ##  Key View
@@ -137,7 +167,7 @@ curl localhost:5001/api/activate -X POST -d token=2SZRHXZBNB3GUCHM375FTB8DJ -d m
 
 ##   Database Notice
 
-The database schema is likely to change as this software is still young. Appropriate `ALTER TABLE` queries will come with the commit message.
+The database schema is likely to change as this software is still in active development. Appropriate `ALTER TABLE` queries will be provided with the commit messages.
 
 ## Implications
 

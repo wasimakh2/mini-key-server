@@ -26,7 +26,7 @@
 {% block title %}Mini Key Server - Key Detail{% endblock%}
 
 {% block container %}
-<h2>Detail for Key {{ key.id }}</h2>
+<h2>Detail for Key {{ key.id if key else 'Not Available' }}</h2>
 
 <div class="panel panel-primary">
 
@@ -86,7 +86,7 @@
         </div>
 </div>
 
-<h3>Audit Log</h3>
+<h3>Audit Log {% if key and key.logs %} {% else %}(No Logs Available) {% endif %}</h3>
 <table class="table">
     <thead>
         <tr>
@@ -96,7 +96,7 @@
         </tr>
     </thead>
     <tbody>
-        {% for log in key.logs|sort(attribute='id', reverse=True) %}
+        {% for log in key.logs|sort(attribute='id', reverse=True) if key and key.logs %}
         <tr>
             <td>{{ log.timestamp|datetime }}</td>
             <td>{{ log.message }}</td>
