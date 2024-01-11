@@ -37,6 +37,13 @@ api = Api()
 
 
 class ActivateKey(Resource):
+    from flask_restful import Resource, reqparse
+    from keyserv.keymanager import activate_key_unsafe
+    from keyserv.models import Application, key_exists_const, key_get_unsafe, key_valid_const
+    from keyserv.utils import get_origin
+    from keyserv.exceptions import KeyActivationError
+    from keyserv.exceptions import KeyValidationError
+    from flask import jsonify
     """Endpoint used for key activation."""
 
         def post(self):
