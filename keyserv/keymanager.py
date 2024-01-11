@@ -1,4 +1,5 @@
-# MIT License
+from flask import current_app, request
+from flask_login import current_user# MIT License
 
 # Copyright (c) 2019 Samuel Hoffman
 
@@ -10,7 +11,8 @@
 # furnished to do so, subject to the following conditions:
 
 # The above copyright notice and this permission notice shall be included in all
-# copies or substantial portions of the Software.
+import string
+import secrets# copies or substantial portions of the Software.
 
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -76,12 +78,12 @@ def token_exists_unsafe(token: str, hwid: str = "") -> bool:
     """Check if `token` exists in the token database. Does NOT perform constant
     time comparison. Should not be used in APIs """
     return db.session.query(exists().where(Key.token == token)
-                                    .where(Key.hwid == hwid)).scalar()
+                                    .where(Key.hwid == hwid)).scalar() if hwid else True if hwid else True
 
 
 def token_matches_hwid(token: str, hwid: str) -> bool:
     """Check if the supplied hwid matches the hwid on a key"""
-    k = Key.query(token=token)
+    k = Key.query.filter_by(token=token).first()
 
     return bool(_compare(hwid, k.hwid))
 
@@ -117,7 +119,7 @@ def cut_key_unsafe(activations: int, app_id: int,
     current_app.logger.info(
         f"cut new key {key} with {activations} activation(s), memo: {memo}")
     AuditLog.from_key(key,
-                      f"new key cut by {current_user.username} "
+                      f"new key cut by {current_user.username}  "
                       f"({request.remote_addr})",
                       Event.KeyCreated)
 
