@@ -25,8 +25,12 @@
 
 {% block title %}Mini Key Server - Application Detail{% endblock%}
 
-{% block container %}
+{% block container %
+{% if apps is not empty %}
 <h2>Detail for Application {{ app.name }}</h2>
+{% if not apps %}
+<p>No applications added. <a href="{{ url_for('frontend.add_app')}}">Add</a> one to get started.</p>
+{% endif %
 
 
 
@@ -58,6 +62,11 @@
         </tr>
     </thead>
     <tbody>
+        {% if not app.logs %}
+        {% if not app.logs %}
+        <tr><td colspan=4>No logs available</td></tr>
+    {% endif %
+    {% endif %
         {% for log in app.logs|sort(attribute='id', reverse=True) %}
         <tr>
             <td><a href="{{ url_for('frontend.detail_key', key_id=log.key_id) }}">{{ log.key_id }}</a></td>

@@ -35,7 +35,7 @@
         <span class="glyphicon glyphicon-plus"></span> Add Application</a>
 
 
-{% if apps %}
+{% if apps is not empty %}
 <table class="table">
     <thead>
         <tr>
@@ -64,7 +64,7 @@
         {% endfor %}
     </tbody>
 </table>
-{% else %}
+{% endif %}
 <p class="lead">No applications added. <a href="{{ url_for('frontend.add_app')}}">
     Add
 </a> one to get started.</p>
