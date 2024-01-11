@@ -45,9 +45,10 @@ def format_datetime(value):
 
 
 def create_app(config):
+    config=config
     app = Flask(__name__)
 
-    app.config.from_object(__name__)
+    app.config.from_object("keyserv.config.{}".format(config))
     app.config.from_object("keyserv.config.{}".format(config))
     app.jinja_env.filters["event"] = format_event
     app.jinja_env.filters["datetime"] = format_datetime
