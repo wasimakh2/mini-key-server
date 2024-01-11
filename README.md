@@ -2,7 +2,7 @@
 
 This web application provides a restful API for your desktop and other applications licensing needs.
 
-### Key View
+##  Key View
 
 ![key view](etc/KeyView.png)
 ![key detail](etc/KeyDetail.png)
@@ -13,7 +13,7 @@ This web application provides a restful API for your desktop and other applicati
 ![app view](etc/AppView.png)
 ![app detail](etc/AppDetail.png)
 
-### API Example
+##  API Example
 
 ![cURL](etc/cURLExample.png)
 
@@ -44,7 +44,7 @@ mv keyserv/config.example.py keyserv/config.py
 Make sure you set `SECRET_KEY` to a randomly generated value, then change `SQLALCHEMY_DATABASE_URI`
 to the URI for the database you create below.
 
-## Database Setup
+####  Database Setup
 
 The following commands will create a suitable database for the keyserver to use.
 
@@ -69,7 +69,7 @@ flask create-user username password
 1. Create an Application at the `/add/app` URL.
 2. Create a Key at the `/add/key` URL. Activations set to `-1` means unlimited activations
 
-### API Endpoints
+##  API Endpoints
 
 #### `/api/check` GET
 
@@ -94,7 +94,7 @@ will be included in the response body if the response failed.
 - `user` - The name of the currently logged in user
 - `hwid` - The same `hwid` provided during /api/activate (see below)
 
-#### `/api/activate` POST
+## # `/api/activate` POST
 
 Used to activate the application. If successful, the number of remaining activations will decrement
 by one. After activation, your application should store the token in an obscure location and use the
@@ -135,7 +135,7 @@ curl localhost:5001/api/activate -X POST -d token=2SZRHXZBNB3GUCHM375FTB8DJ -d m
 }
 ```
 
-## Database Notice
+##   Database Notice
 
 The database schema is likely to change as this software is still young. Appropriate `ALTER TABLE` queries will come with the commit message.
 
