@@ -27,6 +27,7 @@ from flask_restful import Api, Resource, reqparse
 from keyserv.keymanager import (Origin, activate_key_unsafe, key_exists_const,
                                 key_get_unsafe, key_valid_const)
 from keyserv.models import Application
+from keyserv.utils import get_origin
 
 api = Api()
 
@@ -51,8 +52,7 @@ class ActivateKey(Resource):
 
         args = parser.parse_args()
 
-        origin = Origin(request.remote_addr, args.machine,
-                        args.user, args.hwid)
+        origin = get_origin(request.remote_addr, args.machine, args.user, args.hwid)
 
         if not key_exists_const(args.app_id, args.token, origin):
 
@@ -74,7 +74,6 @@ class ActivateKey(Resource):
             return resp, 410
 
         activate_key_unsafe(args.app_id, args.token, origin)
-
         return {"result": "ok",
                 "remainingActivations": str(key.remaining)}, 201
 
