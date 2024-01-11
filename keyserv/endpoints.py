@@ -39,7 +39,7 @@ api = Api()
 class ActivateKey(Resource):
     """Endpoint used for key activation."""
 
-    def post(self):
+        def post(self):
         """
         Activate a key
 
