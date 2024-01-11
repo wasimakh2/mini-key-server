@@ -31,6 +31,14 @@ login_manager.session_protection = "strong"
 
 
 def add_user(username: str, password: bytes, level=500):
+    try:
+        passwd = argon2.hash_password(password, secrets.token_bytes(None))
+        user = Users(username, passwd, level)
+        db.session.add(user)
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        raise e
     passwd = argon2.hash_password(password, secrets.token_bytes(None))
     user = Users(username, passwd, level)
     db.session.add(user)
