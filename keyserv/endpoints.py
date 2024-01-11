@@ -28,7 +28,7 @@ from keyserv.keymanager import Origin, activate_key_unsafe, key_exists_const, ke
 from keyserv.models import Application
 
 from keyserv.exceptions import KeyActivationError, KeyValidationError
-from keyserv.exceptions import KeyValidationError
+from flask_restful import Resource, reqparse, Api
 from flask import jsonify
 import keyserv.models
 from keyserv.utils import get_origin
@@ -44,7 +44,7 @@ class ActivateKey(Resource):
     from keyserv.exceptions import KeyActivationError
     from keyserv.exceptions import KeyValidationError
     from flask import jsonify
-    """Endpoint used for key activation."""
+    """Endpoint used for key activation. Activate a live key; will either allow key activation or deny if there are no more key activations left. Function will log attempts to activate regardless of success or failure."""
 
         def post(self):
         """
@@ -100,7 +100,7 @@ except KeyActivationError as err:
 
 
 class CheckKey(Resource):
-    """Endpoint used for checking if a key is valid."""
+    """Endpoint used for checking if a key is valid. Check if a key is valid."""
     """Endpoint used for checking if a key is valid."""
 
     def get(self):
