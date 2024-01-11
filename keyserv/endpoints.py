@@ -52,7 +52,7 @@ class ActivateKey(Resource):
 
         args = parser.parse_args()
 
-        origin = get_origin(request.remote_addr, args.machine, args.user, args.hwid)
+        origin = Origin(request.remote_addr, args.machine, args.user, args.hwid)
 
         if not key_exists_const(args.app_id, args.token, origin):
 
@@ -74,7 +74,6 @@ class ActivateKey(Resource):
             return resp, 410
 
         activate_key_unsafe(args.app_id, args.token, origin)
-
         return {"result": "ok",
                 "remainingActivations": str(key.remaining)}, 201
 
