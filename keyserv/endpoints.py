@@ -84,8 +84,25 @@ class ActivateKey(Resource):
 
 class CheckKey(Resource):
     """Endpoint used for checking if a key is valid."""
+    """Endpoint used for checking if a key is valid."""
 
     def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument("token", required=True)
+        parser.add_argument("machine", required=True)
+        parser.add_argument("user", required=True)
+        parser.add_argument("hwid", required=True)
+        parser.add_argument("app_id", required=True, type=int)
+        
+        args = parser.parse_args()
+        
+        origin = Origin(request.remote_addr,
+                        args.machine, args.user, args.hwid)
+        
+        if key_valid_const(args.app_id, args.token, origin):
+            return {"result": "ok"}, 201
+        
+        return {"result": "failure", "error": "invalid key"}, 404
         parser = reqparse.RequestParser()
         parser.add_argument("token", required=True)
         parser.add_argument("machine", required=True)
