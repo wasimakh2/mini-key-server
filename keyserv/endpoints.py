@@ -27,6 +27,7 @@ from flask_restful import Api, Resource, reqparse
 from keyserv.keymanager import (Origin, activate_key_unsafe, key_exists_const,
                                 key_get_unsafe, key_valid_const)
 from keyserv.models import Application
+from keyserv.utils import get_origin
 
 api = Api()
 
