@@ -106,8 +106,8 @@ class CheckKey(Resource):
         origin = Origin(request.remote_addr,
                         args.machine, args.user, args.hwid)
         
-        if key_valid_const(args.app_id, args.token, origin):
-            return {"result": "ok"}, 201
+        if not key_valid_const(args.app_id, args.token, origin):
+            return {"result": "failure", "error": "invalid key"}, 404
         
         return {"result": "failure", "error": "invalid key"}, 404
         parser = reqparse.RequestParser()
