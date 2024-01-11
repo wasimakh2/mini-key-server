@@ -21,13 +21,13 @@
 # SOFTWARE.
 
 
-from flask import request
+from flask import request, jsonify
 from flask_restful import Api
 
 from keyserv.keymanager import Origin, activate_key_unsafe, key_exists_const, key_get_unsafe, key_valid_const
 from keyserv.models import Application
 
-from keyserv.exceptions import KeyActivationError
+from keyserv.exceptions import KeyActivationError, KeyValidationError
 from keyserv.exceptions import KeyValidationError
 from flask import jsonify
 import keyserv.models
@@ -37,9 +37,9 @@ api = Api()
 
 
 class ActivateKey(Resource):
-    from flask_restful import Resource, reqparse
+    from flask_restful import Resource, reqparse, Api
     from keyserv.keymanager import activate_key_unsafe
-    from keyserv.models import Application, key_exists_const, key_get_unsafe, key_valid_const
+    from keyserv.models import Application, key_exists_const, key_get_unsafe, key_valid_const, KeyActivationError
     from keyserv.utils import get_origin
     from keyserv.exceptions import KeyActivationError
     from keyserv.exceptions import KeyValidationError
@@ -64,6 +64,16 @@ class ActivateKey(Resource):
         args = parser.parse_args()
 
         origin = get_origin(request.remote_addr, args.machine, args.user, args.hwid)
+
+try:
+    key = key_get_unsafe(args.app_id, args.token, origin)
+    if key.remaining == 0:
+        raise KeyActivationError("key is out of activations", support_message=key.app.support_message)
+    else:
+        activate_key_unsafe(args.app_id, args.token, origin)
+        return jsonify({"result": "ok", "remainingActivations": str(key.remaining)}), 201
+except KeyActivationError as err:
+    return jsonify({"result": "failure", "error": str(err), "support_message": err.support_message}), 410
 
         if not key_exists_const(args.app_id, args.token, origin):
 
@@ -106,7 +116,13 @@ class CheckKey(Resource):
         origin = Origin(request.remote_addr,
                         args.machine, args.user, args.hwid)
         
-        if not key_valid_const(args.app_id, args.token, origin):
+        try:
+    if key_valid_const(args.app_id, args.token, origin):
+        return {"result": "ok"}, 201
+    else:
+        raise KeyValidationError("invalid key")
+except KeyValidationError:
+    return {"result": "failure", "error": "invalid key"}, 404
             return {"result": "failure", "error": "invalid key"}, 404
         
         return {"result": "failure", "error": "invalid key"}, 404
